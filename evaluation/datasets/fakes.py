@@ -11,7 +11,7 @@ from feature_extraction.extract_mel_spectrogram import TRANSFORMS
 
 
 def read_wav(path, folder_name='melspec_10s_22050hz', length=22050*10):
-    wav, _ = librosa.load(path, sr=None)
+    wav, _ = librosa.load(path, sr=22050)
     # this cannot be a transform without creating a huge overhead with inserting audio_name in each
     y = np.zeros(length)
     if wav.shape[0] < length:
@@ -58,7 +58,7 @@ class FakesFolder(DatasetFolder):
 
     @staticmethod
     def sample_from_path(path):
-        if path.endswith('.wav'):
+        if path.endswith('.wav') or path.endswith('.flac'):
             return read_wav(path)
         else:
             return np.load(path)
